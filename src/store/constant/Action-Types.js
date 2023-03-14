@@ -1,0 +1,8 @@
+export const ActionTypes = {
+
+    SET_TOGGLE: "SET_TOGGLE",
+    SET_PRODUCTS: "SET_PRODUCTS",
+    SET_SINGLE_PRODUCT:"SET_SINGLE_PRODUCT",
+    SET_SEARCH:"SET_SEARCH"
+
+}

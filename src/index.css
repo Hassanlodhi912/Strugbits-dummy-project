@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+
+}
+@font-face {
+  font-family: "Axiforma-SemiBold";
+  src: local("Axiforma-SemiBold"),
+   url("./fonts/Axiforma-SemiBold.ttf") format("truetype");
+  font-weight: bold;
+  }
+  @font-face {
+    font-family: "Axiforma-Medium";
+    src: local("Axiforma-Medium"),
+     url("./fonts/Axiforma-Medium.ttf") format("truetype");
+    font-weight: bold;
+    }
+    @font-face {
+      font-family: "Axiforma-ExtraBold";
+      src: local("Axiforma-ExtraBold"),
+       url("./fonts/Axiforma-ExtraBold.ttf") format("truetype");
+      font-weight: bold;
+      }
+
+      @font-face {
+
+        font-family: "Axiforma-Regular";
+        src: local("Axiforma-Regular"),
+         url("./fonts/Axiforma-Regular.ttf") format("truetype");
+         font-weight: lighter;
+        }
+        
+        @font-face {
+
+          font-family: "Axiforma-Bold";
+          src: local("Axiforma-Bold"),
+           url("./fonts/Axiforma-Bold.ttf") format("truetype");
+          }
+
+          @font-face {
+
+            font-family: "Axiforma-Light";
+            src: local("Axiforma-Light"),
+             url("./fonts/Axiforma-Light.ttf") format("truetype");
+             font-size: 12px;
+             color: #C4C4C4;
+            }
+            
+
+        
