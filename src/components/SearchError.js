@@ -24,7 +24,9 @@ const SearchError = () => {
 const Wrapper = styled.section`
 
   .container {
-    padding: 9rem 0;
+    /* padding: 9rem 0; */
+    padding-bottom: 9rem;
+
     text-align: center;
 
   } 

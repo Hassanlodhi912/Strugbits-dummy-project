@@ -6,10 +6,10 @@ import { Button } from "../styles/Button";
 
 const Nav = () => {
   const [menuIcon, setMenuIcon] = useState();
-  const [showbtn, setShowBtn] = useState();
-  
+
   const Nav = styled.nav`
     .navbar-lists {
+      overflow: none;
       display: flex;
       gap: 5rem;
       align-items: center;
@@ -33,6 +33,7 @@ const Nav = () => {
 
     .mobile-nav-icon[name="close-outline"] {
       display: none;
+
     }
 
     .close-outline {
@@ -51,15 +52,16 @@ const Nav = () => {
 
         .mobile-nav-icon {
           font-size: 4.2rem;
-          color: ${({theme})=>theme.colors.hr};
+          color: ${({ theme }) => theme.colors.hr};
         }
       }
 
       .active .mobile-nav-icon {
         display: none;
         font-size: 4.2rem;
-        position: absolute;
-        top: 30%;
+        position: fixed;
+        /* position: absolute; */
+        top: 10%;
         right: 10%;
         color: ${({ theme }) => theme.colors.black};
         z-index: 9999;
@@ -70,10 +72,10 @@ const Nav = () => {
       }
 
       .navbar-lists {
-
+        position:fixed;
         width: 100vw;
         height: 100vh;
-        position: absolute;
+        /* position: absolute; */
         top: 0;
         left: 0;
         background-color: black;
@@ -82,7 +84,6 @@ const Nav = () => {
         justify-content: center;
         align-items: center;
         flex-direction: column;
-
         visibility: hidden;
         opacity: 0;
         transform: translateX(100%);
@@ -90,6 +91,8 @@ const Nav = () => {
         transition: all 3s linear;
       }
       .active .navbar-lists {
+        overflow: hidden;
+
         visibility: visible;
         opacity: 1;
         transform: translateX(0);
@@ -126,7 +129,7 @@ const Nav = () => {
           </li>
           <li>
             <NavLink
-              to="/about"
+              to="/abou"
               className="navbar-link "
               onClick={() => setMenuIcon(false)}>
               About
@@ -141,19 +144,19 @@ const Nav = () => {
             </NavLink>
           </li>
           <li>
-          <NavLink
+            <NavLink
               to="/products"
               className="navbar-link "
               onClick={() => setMenuIcon(false)}>
-                Members
+              Members
             </NavLink>
           </li>
           <li>
-          <NavLink
+            <NavLink
               to="/contact"
               className="navbar-link "
               onClick={() => setMenuIcon(false)}>
-            <Button className="nav-link-btn"> Contact Us</Button>
+              <Button className="nav-link-btn"> Contact Us</Button>
             </NavLink>
 
           </li>
@@ -166,7 +169,7 @@ const Nav = () => {
             className="mobile-nav-icon"
             onClick={() => setMenuIcon(true)}
           />
-          <CgClose style={{color:"white"}}
+          <CgClose style={{ color: "white" }}
             name="close-outline"
             className="mobile-nav-icon close-outline"
             onClick={() => setMenuIcon(false)}

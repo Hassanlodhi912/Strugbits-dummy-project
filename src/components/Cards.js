@@ -13,48 +13,61 @@ import MainRed from "../images/MainRed.png";
 import MainSmall from "../images/MainSmall.png";
 import CardLastblue from "../images/CardLastblue.png";
 import CardLastBlack from "../images/CardLastBlack.png";
-import ErrorPage from '../ErrorPage';
 import SearchError from './SearchError';
 
 const Cards = () => {
   const [initailData, setinitialData] = useState([]);
+  const [initailDataLength, setinitailDataLength] = useState();
+  const [fullSearch, setFullSearch] = useState()
+  const [inputVal, setInputVal] = useState("")
   const [finalData, setFinalData] = useState([]);
+  const [finalDataLength, setFinalDataLength] = useState();
   const [showmore, setShowMore] = useState(true);
   const featureProducts = useSelector((state) => state.ToggleReducer.Products);
 
   const dispatch = useDispatch();
-   const fetchProduct = async () => {
+  const fetchProduct = async () => {
     const response = await axios.get("https://jsonplaceholder.typicode.com/users")
     let copyArr = []
     for (let i = 0; i <= 3; i++) {
       copyArr.push(response.data[i])
     }
 
-
     setFinalData(response.data); //10
+    setFinalDataLength(response.data.length)
+    // console.log("finalData: ", response.data.length)
+    // console.log("finalData: ")
+
     setinitialData(copyArr); //4
-    console.log(copyArr, "hassanc");
+    setinitailDataLength(copyArr.length)
+
     setData(response.data);
     dispatch(setProducts(response.data));
+
+    // setFullSearch(copyArr)
 
   }
 
   const [data, setData] = useState([]);
   const Searching = (searchItems) => {
-    setinitialData(featureProducts.filter((val) => {
-      console.log("hassan-gobi")
+
+    // setinitialData(featureProducts.filter((val) => {
+    //   console.log("if")
+    //   if (val === "") {
+    //     return val;
+    //   } else if (val.username.toLowerCase().includes(searchItems.toLowerCase()) || val.email.toLowerCase().includes(searchItems.toLowerCase()) || val.company.name.toLowerCase().includes(searchItems.toLowerCase())) {
+    //     return val;
+    //   }
+    // })
+    // )
+    setFinalData(featureProducts.filter((val) => {
       if (val === "") {
         return val;
       } else if (val.username.toLowerCase().includes(searchItems.toLowerCase()) || val.email.toLowerCase().includes(searchItems.toLowerCase()) || val.company.name.toLowerCase().includes(searchItems.toLowerCase())) {
         return val;
-
       }
     })
     )
-
-
-
-
   }
   useEffect(() => {
     fetchProduct()
@@ -62,14 +75,17 @@ const Cards = () => {
 
   const render = () => {
     setShowMore(true)
-    console.log(showmore);
+    // console.log(showmore);
   }
 
   const renderSec = () => {
     setShowMore(false)
-    console.log(showmore);
+    // console.log(showmore);
   }
 
+  // console.log(finalDataLength)
+  // console.log(finalData.length)
+  console.log("inputVal !=", inputVal != "", inputVal)
 
   return (
 
@@ -86,44 +102,51 @@ const Cards = () => {
             type="text"
             placeholder="Search by Name, Username, Zip Code, Address"
             onChange={(e) => {
+              // console.log(e.target.value)
+
+              setInputVal(e.target.value)
               Searching(e.target.value);
             }} />
           <Button className='btn-search'> <img src={search} alt="" /></Button>
 
         </div>
 
-        {showmore === true &&
-          // initailData[0] ?
-          initailData.map((val) => {
-            console.log("hassan show more 4");
-            return <Pro key={val.id}{...val} />
-          })
-          // :
-          // <SearchError />
+        {
+          finalData[0] ?
+            (
+              showmore === false || inputVal != "" ?
+                finalData.map((val) => {
+                  return <Pro key={val.id}{...val} />
+                })
+                :
+                initailData.map((val) => {
+                  return <Pro key={val.id}{...val} />
+                })
+            )
+            :
+            <SearchError />
         }
-        {showmore === false &&
 
-          // finalData[0] ? 
-
-          finalData.map((val) => {
-            console.log("hassan show more 10");
-
-            return <Pro key={val.id}{...val} />
-
-
-          })
-          // :
-          // <SearchError />
-        }
         <div className="show-more-div" >
           {
-            showmore === false &&
-            <h3 className='show-more' onClick={render} >Show less</h3>
+
+
           }
           {
-            showmore === true &&
-            <h3 className='show-more' onClick={renderSec}>Show more</h3>
+            // finalData.length <= finalDataLength || initailData.length <= initailDataLength &&
+            finalData.length === finalDataLength &&
+            <>
+              {
+                showmore === false &&
+                <h3 className='show-more' onClick={render} >Show less</h3>
+              }
+              {
+                showmore === true &&
+                <h3 className='show-more' onClick={renderSec}>Show more</h3>
+              }
+            </>
           }
+
         </div>
       </div>
 

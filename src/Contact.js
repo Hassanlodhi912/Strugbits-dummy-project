@@ -1,44 +1,67 @@
 import styled from "styled-components";
-import phone from "../src/images/phone.png"
 import Group31 from "../src/images/Group31.png"
-import { useState } from "react";
-import ErrorMessage from "./ErrorMessage";
 import { Button } from "../src/styles/Button";
 import { useFormik } from "formik";
 import Group30 from "./images/Group30.png"
 import { contactFormSchema } from "./schemas/Index";
-
+import axios from "axios";
 import Swal from 'sweetalert2'
 
 
 const initialValues = {
+
   name: "",
   last: "",
   email: "",
   phone: "",
   subject: "",
-  message : ""
+  message: ""
+
 }
 
-const Contact = () => {
-const Swal = require('sweetalert2')
 
-  const { values, errors,touched, handleBlur, handleChange, handleSubmit } = useFormik
-  ({
-     initialValues: initialValues,
-     validationSchema:contactFormSchema,
-     onSubmit: (values,action) => {
-    console.log(values);
-    Swal.fire(
-      'Good job!',
-      'You clicked the button!',
-      'success'
-    )
-    action.resetForm();
+const Contact = () => {
+
+  const Swal = require('sweetalert2')
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik
+
+    ({
+      initialValues: initialValues,
+      validationSchema: contactFormSchema,
+      onSubmit: (values, action) => {
+        // console.log(values, "Contact value")
+
+
+        fetch('https://sheet.best/api/sheets/cb77d9a8-3a8d-409d-a147-01c8821e56b2', {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            // The response comes here
+            console.log(data);
+          })
+          .catch((error) => {
+            // Errors are reported there
+            console.log(error);
+          });
+
+
+        Swal.fire(
+          'Good job!',
+          'Your form has been submitted!',
+          'success'
+        )
+        action.resetForm();
+      }
     }
-  }
-  )
-  console.log(errors,"error");
+    )
+  // console.log(errors);
 
   return (
     <Wrapper>
@@ -47,7 +70,7 @@ const Swal = require('sweetalert2')
       </div>
       <div className="div-help-you-text" >
         <span className="h2-text" >I would Love to Help You</span>
-        <h6>Please feel free to get in touch using the form below. We’d love to hear your thoughts & <br className="line" /> answer any questions you may have!</h6>
+        <h6 className="please-feel-free">Please feel free to get in touch using the form below. We’d love to hear your thoughts & answer any questions you may have!</h6>
       </div>
       <div >
         <div className="third-div">
@@ -62,8 +85,8 @@ const Swal = require('sweetalert2')
             <div className="phone-div-contact" >
               <img src={Group31} alt="" className="phone-img-contact" />
               <div className="phone-div-div" >
-                <h5 className="phone-div-contact-text-2">Email Address</h5>
-                <h5 className="phone-div-contact-text" >info@yourcompany.com</h5>
+                <h5 className="phone-div-contact-text">Email Address</h5>
+                <h5 className="phone-div-contact-text-2" >info@yourcompany.com</h5>
               </div>
             </div>
           </div>
@@ -76,7 +99,7 @@ const Swal = require('sweetalert2')
             <form onSubmit={handleSubmit}
               className="contact-inputs" >
               <div className="flex-div">
-                <label className="label">
+                <label className="label-input">
                   <h6 className="label-css">
                     First Name
                   </h6>
@@ -87,16 +110,15 @@ const Swal = require('sweetalert2')
                     name="name"
                     id="name"
                     autoComplete="off"
-                    // label="FirstName"
                     value={values.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    
+
                   />
-               { errors.name && touched.name ?(  <p className="form-error">{errors.name}</p>):null}
+                  {errors.name && touched.name ? (<p className="form-error">{errors.name}</p>) : null}
                 </label>
 
-                <label className="label">
+                <label className="label-input">
                   <h6 className="label-css">
                     Last Name
                   </h6>
@@ -110,13 +132,14 @@ const Swal = require('sweetalert2')
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-              
-               { errors.last && touched.last ?(  <p className="form-error">{errors.last}</p>):null}
-               </label>
+
+                  {errors.last && touched.last ? (<p className="form-error">{errors.last}</p>) : null}
+
+                </label>
 
               </div>
               <div className="flex-div">
-                <label className="label">
+                <label className="label-input">
                   <h6 className="label-css">
                     Email*
                   </h6>
@@ -131,10 +154,12 @@ const Swal = require('sweetalert2')
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-               { errors.email && touched.email ? (<p className="form-error">{errors.email}</p>):null}
-               </label>
 
-                <label className="label">
+                  {errors.email && touched.email ? (<p className="form-error">{errors.email}</p>) : null}
+
+                </label>
+
+                <label className="label-input">
                   <h6 className="label-css">
                     Phone no*
                   </h6>
@@ -150,9 +175,11 @@ const Swal = require('sweetalert2')
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-               { errors.phone && touched.phone ?(  <p className="form-error">{errors.phone}</p>):null}
-               </label>
-            
+
+                  {errors.phone && touched.phone ? (<p className="form-error">{errors.phone}</p>) : null}
+
+                </label>
+
               </div>
               <div className="iiput" >
                 <label className="label"
@@ -161,21 +188,21 @@ const Swal = require('sweetalert2')
                     Subject*
                   </h6>
 
-                  <input 
+                  <input
                     className="search__input-contact"
                     type="text"
                     name="subject"
                     placeholder="Enter your subject"
                     autoComplete="off"
-                    
+
                     value={values.subject}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
 
-               { errors.subject && touched.subject ?(  <p className="form-error">{errors.subject}</p>):null}
-               </label>
-              
+                  {errors.subject && touched.subject ? (<p className="form-error">{errors.subject}</p>) : null}
+                </label>
+
               </div>
               <div >
                 <label className="label"
@@ -193,10 +220,8 @@ const Swal = require('sweetalert2')
                     value={values.message}
                     onChange={handleChange}
                     onBlur={handleBlur}></textarea>
-               { errors.message && touched.message ?(  <p className="form-error">{errors.message}</p>):null}
-               </label>
-
-                   
+                  {errors.message && touched.message ? (<p className="form-error">{errors.message}</p>) : null}
+                </label>
               </div>
               <Button type="submit" className="btn-contact-submit"  >
                 SUBMIT
@@ -211,10 +236,7 @@ const Swal = require('sweetalert2')
 
 export default Contact;
 const Wrapper = styled.section`
-
 text-align: center;
-
-
 .contact-div {
 
   background-color: ${({ theme }) => theme.colors.black};
@@ -228,7 +250,7 @@ text-align: center;
 }
 .h2-text{
 font-family: "Axiforma-bold";
-color : ${({theme})=>theme.colors.blackest};
+color : ${({ theme }) => theme.colors.blackest};
 font-size: 30px;
 }
 
@@ -240,6 +262,7 @@ font-size: 30px;
     justify-content:center; 
     gap: 1rem;
     max-height:500px;
+    align-items: center;
 
 }
 
@@ -265,10 +288,14 @@ font-size: 30px;
   }
 
   .phone-div-contact{
+    
+    align-items: center;
     display: flex;
     gap: 2rem;
     max-width: 50%;
     min-width: 300px;
+
+
   }
   .phone-div-div{
     flex-wrap: wrap;
@@ -276,6 +303,7 @@ font-size: 30px;
   .phone-div-contact-text{
     color: ${({ theme }) => theme.colors.hr};
     font-weight: bold;
+    font-size: 20px;
   }
   .phone-div-contact-text-2{
     font-weight: lighter;
@@ -297,10 +325,12 @@ font-size: 30px;
      display: flex;
     justify-content: space-between ;
     flex-wrap: wrap;
+    gap: 2rem;
   }
+  
   .search__input-contact{
-
-    width : 315.09px;
+    width: 100%;
+    min-width : 315.09px;
     height: 46px;
     background: white 0% 0% no-repeat padding-box;
     border: 1px solid #000000;
@@ -311,6 +341,7 @@ font-size: 30px;
    font-family: "Axiforma-Light";
 
   }
+
 textarea{
 
   border: 1px solid ${({ theme }) => theme.colors.black};
@@ -319,18 +350,26 @@ textarea{
     font-family: "Axiforma-Light";
 
 }
-
-.label{
-  display: flex;
+.label-input{
+  width:314px;
   flex-direction: column;
   text-align: left;
 }
+
+.label{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-align: left;
+}
+
 .btn-contact-submit{
   width: 100px;
   width:inherit;
   background-color: ${({ theme }) => theme.colors.ellipse};
   color: ${({ theme }) => theme.colors.hr};
 }
+
 .iiput{
   /* width: 1000px; */
   max-width: auto;
@@ -338,9 +377,15 @@ textarea{
     width: 100% !important;
   }
 }
+
 .PhoneNum{
   color: white;
   font-size:20px;
+}
+.please-feel-free{
+
+  max-width: 682px;
+
 }
 .lorem{
   width: 900px;
@@ -351,6 +396,7 @@ textarea{
     text-align: center;
 
 }
+
 .form-error {
     font-size: 1.4rem;
     color: #b22b27;
@@ -382,11 +428,25 @@ textarea{
       }
     }
   }
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    .third-div-main{
-      background-color: yellow;
+ 
+}
+@media (max-width: ${({ theme }) => theme.media.mobile}) {
+  .label-input {
+    padding-left: 20px;
+    padding-right: 20px;
+     width: 100%;
+     flex: 1;
     }
-   
-  }
+
+    .label{
+
+      padding-left: 20px;
+      padding-right: 20px;
+
+    }
+
+
 }
 `;
+
+

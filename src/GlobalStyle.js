@@ -140,9 +140,10 @@ ${"" /* resuable code section  */}
 
 @media (max-width: ${({ theme }) => theme.media.tab}) {
 
-    .container {
+    .containerr {
     max-width: 130rem;
-    padding: 0 3.2rem;
+    padding: 0 3.2rem; 
+
   }
   }
 
